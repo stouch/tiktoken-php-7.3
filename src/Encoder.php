@@ -23,14 +23,21 @@ use function sprintf;
 use const PHP_INT_MAX;
 
 /** @psalm-import-type NonEmptyByteVector from EncodeUtil */
-final class Encoder implements Stringable
+final class Encoder
 {
+    public $name;
+    private $vocab;
+    private $pattern;
+
     /**
      * @param non-empty-string $name
      * @param non-empty-string $pattern
      */
-    public function __construct(public readonly string $name, private Vocab $vocab, private string $pattern)
+    public function __construct($name, $vocab, $pattern)
     {
+        $this->name = $name;
+        $this->vocab = $vocab;
+        $this->pattern = $pattern;
     }
 
     public function __toString(): string
@@ -80,7 +87,9 @@ final class Encoder implements Stringable
             return '';
         }
 
-        return implode(array_map($this->vocab->getToken(...), $tokens));
+        return implode(array_map(function ($token) {
+            return $this->vocab->getToken($token);
+        }, $tokens));
     }
 
     /**

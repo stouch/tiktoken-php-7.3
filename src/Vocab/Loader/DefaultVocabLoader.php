@@ -24,8 +24,11 @@ use const DIRECTORY_SEPARATOR;
 
 final class DefaultVocabLoader implements VocabLoader
 {
-    public function __construct(private string|null $cacheDir = null)
+    private $cacheDir = null;
+
+    public function __construct($cacheDir)
     {
+        $this->cacheDir = $cacheDir;
     }
 
     public function load(string $uri): Vocab

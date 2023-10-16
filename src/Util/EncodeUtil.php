@@ -20,7 +20,9 @@ final class EncodeUtil
      */
     public static function toBytes(string $text): array
     {
-        return array_map(hexdec(...), str_split(bin2hex($text), 2));
+        return array_map(function ($txt) {
+            return hexdec($txt);
+        }, str_split(bin2hex($text), 2));
     }
 
     /**
